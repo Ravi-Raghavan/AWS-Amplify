@@ -8,7 +8,17 @@ import {
   useParams
 } from "react-router-dom";
 import './App.css'
+import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 //import {HashLink} from 'react-router-hash-link'
+var AWS = require('aws-sdk/dist/aws-sdk-react-native');
+var poolData = {
+  UserPoolId: "us-east-1_tLwgFiE9F",
+  ClientId: "3pqs5drjnjggr6gn3hglsp1eu2"
+};
+var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+var cognitoUser = userPool.getCurrentUser();
+
+
 class App extends React.Component{
     constructor(props){
         super(props)
@@ -16,6 +26,24 @@ class App extends React.Component{
             active: "Home"
         }
         this.changeBackground = this.changeBackground.bind(this)
+    }
+    componentWillMount(){
+      window.alert(cognitoUser)
+      if (cognitoUser != null) {
+        
+        this.setState({
+          active: "User"
+        })
+        cognitoUser.getSession(function(err, session) {
+            if (err) {
+                alert(err);
+                return;
+            }
+            console.log('session validity: ' + session.isValid());
+            // other AWS actions ...
+        });
+    }
+
     }
     isActive(tab){
         this.setState({
@@ -37,29 +65,29 @@ class App extends React.Component{
                 (
                     <Router id = 'Router'>
                     <div>
-                    <img className = 'Logo' height = "5%" width = "3.5%"src = 'https://i.pinimg.com/originals/21/66/52/2166520525df3b2c843091b1c832ad0b.jpg'></img>
-                    <img className = 'CompanyName'height = "10%" width = "7.5%" src = 'https://s3.amazonaws.com/logos.brandpa.com/uploads/d98ac247a52a65c6cff7239de070162e/aloena.png'></img>
+                    <img className = 'Logo' height = "5%" width = "10px"src = 'https://i.pinimg.com/originals/21/66/52/2166520525df3b2c843091b1c832ad0b.jpg'></img>
+                    <img className = 'CompanyName'height = "10%" width = "10px" src = 'https://s3.amazonaws.com/logos.brandpa.com/uploads/d98ac247a52a65c6cff7239de070162e/aloena.png'></img>
                     <div className="vertical_dotted_line">
 
                     </div>
                     <div className = 'visit_company'>
-                        <img className = 'mapsLogo' height = "10%" width = "5.5%"src = 'https://i.pinimg.com/originals/71/c8/06/71c806428f9d8c76f8dd491ee177382c.png'></img>
+                        <img className = 'mapsLogo' height = "10%" width = "10px"src = 'https://i.pinimg.com/originals/71/c8/06/71c806428f9d8c76f8dd491ee177382c.png'></img>
                     </div>
                     <div className = 'address'>
                         <text ><strong>Visit Us: </strong> 3 Nashua Drive, Marlboro, New Jersey, USA</text>
                     </div>
                     <div className = 'CallUs'>
-                    <img className = 'telephone_logo' height = "10%" width = "4.3%" src = 'https://cdn2.iconfinder.com/data/icons/market-and-economics-2-1/512/68-512.png'></img>
+                    <img className = 'telephone_logo' height = "10%" width = "10px" src = 'https://cdn2.iconfinder.com/data/icons/market-and-economics-2-1/512/68-512.png'></img>
                     <a className = 'CallUsButton'>
                         <strong>Call Us:</strong> (848) 218-3004
                     </a>
                     </div>
                     <div className = 'SocialMedia'>
                         Social Media:
-                        <img className = 'Instagram' height = '10%' width = '2.5%' src = 'http://pluspng.com/img-png/instagram-vector-png-instagram-insta-logo-new-images-710.png'></img>
-                        <img className = 'Facebook' height = '10%' width = '2.5%' src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW9-oN3iUXB5m_pwyIFb6UE_4Xj2Rp0l2DBR6NV6stEb1vOZs2&s'></img>
-                        <Link onClick = {this.isActive.bind(this, 'Home')} style = {{textDecoration: 'none', color: 'blue', fontFamily: 'Garamond', fontWeight: 'bold',marginLeft: '25px'}} to = '/'>Log In</Link>
-                        <Link onClick = {this.isActive.bind(this, 'Home')} style = {{textDecoration: 'none', color: 'blue', fontFamily: 'Garamond', fontWeight: 'bold',marginLeft: '25px'}} to = '/'>Sign Up</Link>
+                        <img className = 'Instagram' height = '10%' width = '10px' src = 'http://pluspng.com/img-png/instagram-vector-png-instagram-insta-logo-new-images-710.png'></img>
+                        <img className = 'Facebook' height = '10%' width = '10px' src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW9-oN3iUXB5m_pwyIFb6UE_4Xj2Rp0l2DBR6NV6stEb1vOZs2&s'></img>
+                        <a href = "https://fitnessreactapp.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=3pqs5drjnjggr6gn3hglsp1eu2&redirect_uri=https://master.d19md7g5o94cab.amplifyapp.com/" style = {{textDecoration: 'none', color: 'blue', fontFamily: 'Garamond', fontWeight: 'bold',marginLeft: '25px'}}>Log In</a>
+                        <a href = "https://fitnessreactapp.auth.us-east-1.amazoncognito.com/signup?response_type=code&client_id=3pqs5drjnjggr6gn3hglsp1eu2&redirect_uri=https://master.d19md7g5o94cab.amplifyapp.com/" style = {{textDecoration: 'none', color: 'blue', fontFamily: 'Garamond', fontWeight: 'bold',marginLeft: '25px'}}>Sign Up</a>
                     </div>
                     
                     </div>
