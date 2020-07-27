@@ -16,7 +16,6 @@ var poolData = {
   ClientId: "3pqs5drjnjggr6gn3hglsp1eu2"
 };
 var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-var cognitoUser = userPool.getCurrentUser();
 
 
 class App extends React.Component{
@@ -28,12 +27,14 @@ class App extends React.Component{
         this.changeBackground = this.changeBackground.bind(this)
     }
     componentWillMount(){
+      var cognitoUser = userPool.getCurrentUser();
       window.alert(cognitoUser)
+      this.setState({
+        active: "Home"
+      })
       if (cognitoUser != null) {
         
-        this.setState({
-          active: "User"
-        })
+        
         cognitoUser.getSession(function(err, session) {
             if (err) {
                 alert(err);
