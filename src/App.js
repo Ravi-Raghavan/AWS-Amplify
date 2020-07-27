@@ -7,7 +7,7 @@ import {
   useRouteMatch,
   useParams
 } from "react-router-dom";
-import '/Users/raviraghavan/Downloads/aws_amplify/src/App.css'
+import './App.css'
 //import {HashLink} from 'react-router-hash-link'
 class App extends React.Component{
     constructor(props){
