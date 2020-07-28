@@ -30,14 +30,7 @@ class App extends React.Component{
     }
     async componentWillMount(){
       var cognitoUser = await userPool.getCurrentUser();
-      Auth.currentAuthenticatedUser()
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-
+      
       console.log(cognitoUser)
       this.setState({
         active: "Home"
