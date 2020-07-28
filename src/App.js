@@ -9,6 +9,8 @@ import {
 } from "react-router-dom";
 import './App.css'
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+import Amplify, { Auth } from 'aws-amplify';
+
 //import {HashLink} from 'react-router-hash-link'
 var AWS = require('aws-sdk/dist/aws-sdk-react-native');
 var poolData = {
@@ -26,9 +28,17 @@ class App extends React.Component{
         }
         this.changeBackground = this.changeBackground.bind(this)
     }
-    componentWillMount(){
-      var cognitoUser = userPool.getCurrentUser();
-      window.alert(cognitoUser)
+    async componentWillMount(){
+      var cognitoUser = await userPool.getCurrentUser();
+      Auth.currentAuthenticatedUser()
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+
+      console.log(cognitoUser)
       this.setState({
         active: "Home"
       })
@@ -87,8 +97,8 @@ class App extends React.Component{
                         Social Media:
                         <img className = 'Instagram' height = '10%' width = '10px' src = 'http://pluspng.com/img-png/instagram-vector-png-instagram-insta-logo-new-images-710.png'></img>
                         <img className = 'Facebook' height = '10%' width = '10px' src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW9-oN3iUXB5m_pwyIFb6UE_4Xj2Rp0l2DBR6NV6stEb1vOZs2&s'></img>
-                        <a href = "https://fitnessreactapp.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=3pqs5drjnjggr6gn3hglsp1eu2&redirect_uri=https://master.d19md7g5o94cab.amplifyapp.com/" style = {{textDecoration: 'none', color: 'blue', fontFamily: 'Garamond', fontWeight: 'bold',marginLeft: '25px'}}>Log In</a>
-                        <a href = "https://fitnessreactapp.auth.us-east-1.amazoncognito.com/signup?response_type=code&client_id=3pqs5drjnjggr6gn3hglsp1eu2&redirect_uri=https://master.d19md7g5o94cab.amplifyapp.com/" style = {{textDecoration: 'none', color: 'blue', fontFamily: 'Garamond', fontWeight: 'bold',marginLeft: '25px'}}>Sign Up</a>
+                        <a href = "https://fitnessreactapp.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=3pqs5drjnjggr6gn3hglsp1eu2&redirect_uri=https://master.d19md7g5o94cab.amplifyapp.com/&scope=aws.cognito.signin.user.admin" style = {{textDecoration: 'none', color: 'blue', fontFamily: 'Garamond', fontWeight: 'bold',marginLeft: '25px'}}>Log In</a>
+                        <a href = "https://fitnessreactapp.auth.us-east-1.amazoncognito.com/signup?response_type=token&client_id=3pqs5drjnjggr6gn3hglsp1eu2&redirect_uri=https://master.d19md7g5o94cab.amplifyapp.com/&scope=aws.cognito.signin.user.admin" style = {{textDecoration: 'none', color: 'blue', fontFamily: 'Garamond', fontWeight: 'bold',marginLeft: '25px'}}>Sign Up</a>
                     </div>
                     
                     </div>
