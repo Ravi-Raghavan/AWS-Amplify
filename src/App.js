@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import './App.css'
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
-import Amplify, { Auth } from 'aws-amplify';
+//import Amplify, { Auth } from 'aws-amplify';
 
 //import {HashLink} from 'react-router-hash-link'
 var AWS = require('aws-sdk/dist/aws-sdk-react-native');
